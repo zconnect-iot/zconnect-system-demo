@@ -1,0 +1,9 @@
+[submodule "modules/device-simulator-frontend"]
+	path = modules/device-simulator-frontend
+	url = git@code.zoetrope.io:zconnect/device-simulator-frontend
+[submodule "modules/device-simulator-backend"]
+	path = modules/device-simulator-backend
+	url = git@code.zoetrope.io:zconnect/device-simulator-backend
+[submodule "modules/zconnect-demo-virtual"]
+	path = modules/zconnect-demo-virtual
+	url = git@code.zoetrope.io:zconnect/zconnect-demo-virtual

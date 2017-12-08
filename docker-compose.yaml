@@ -1,0 +1,76 @@
+version: '2.0'
+services:
+
+  apiserver:
+      build:
+          context: modules/device-simulator-backend
+          dockerfile: Dockerfile.zcsimserver
+      environment: &env
+          - ZCSIM_ENV=localtesting_fridge
+      ports:
+          - "5000:5000"
+      depends_on:
+          - celeryworker
+          - redis
+
+  celeryworker:
+      environment: *env
+      build:
+          context: modules/device-simulator-backend
+          dockerfile: Dockerfile.zcsimworker
+      depends_on:
+          - redis
+
+  celerybeat:
+      environment: *env
+      build:
+          context: modules/device-simulator-backend
+          dockerfile: Dockerfile.zcsimbeat
+      depends_on:
+          - redis
+
+  server:
+    build:
+      context: modules/zconnect-demo-virtual
+      dockerfile: deploy/dockerfiles/server.dockerfile
+    env_file:
+      - modules/zconnect-demo-virtual/deploy/keys-local.env
+    depends_on:
+      - mongodb
+      - redis
+    ports:
+      - "9090:9090"
+
+  watsonworker:
+    build:
+      context: modules/zconnect-demo-virtual
+      dockerfile: deploy/dockerfiles/watsonworker.dockerfile
+    env_file:
+      - modules/zconnect-demo-virtual/deploy/keys-local.env
+    depends_on:
+      - mongodb
+      - redis
+      - server
+
+  frontend:
+    build:
+      context: modules/device-simulator-frontend
+      dockerfile: Dockerfile-node
+    depends_on:
+      - apiserver
+    ports:
+      - "9000:9000"
+        
+  mongodb:
+    image: mongo
+    volumes:
+      - db_data:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+        image: "redis:alpine"
+
+volumes:
+  db_data:
+    driver: local
