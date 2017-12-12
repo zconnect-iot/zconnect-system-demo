@@ -7,3 +7,6 @@
 [submodule "modules/zconnect-demo-virtual"]
 	path = modules/zconnect-demo-virtual
 	url = git@code.zoetrope.io:zconnect/zconnect-demo-virtual
+[submodule "modules/zconnect-demo-web"]
+	path = modules/zconnect-demo-web
+	url = git@code.zoetrope.io:zconnect/zconnect-demo-web.git
