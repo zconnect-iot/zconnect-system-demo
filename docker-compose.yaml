@@ -1,4 +1,4 @@
-version: '2.0'
+version: '3.2'
 services:
 
   apiserver:
@@ -29,28 +29,87 @@ services:
       depends_on:
           - redis
 
-  server:
-    build:
-      context: modules/zconnect-demo-virtual
-      dockerfile: deploy/dockerfiles/server.dockerfile
-    env_file:
-      - modules/zconnect-demo-virtual/deploy/keys-local.env
-    depends_on:
-      - mongodb
-      - redis
-    ports:
-      - "9090:9090"
+  server: &common_mount
+      depends_on:
+          - redis
+      build:
+          context: modules/zconnect-django-demo
+          dockerfile: deploy/Dockerfile.composelocal
+      volumes:
+          - type: bind
+            target: /django/django_demo
+            source: ./modules/zconnect-django-demo/django_demo
+            read_only: true
+          - type: bind
+            target: /django/apps/zconnect-django
+            source: ./modules/zconnect-django-demo/apps/zconnect-django
+            read_only: true
+          - type: bind
+            target: /django/configs
+            source: ./configs
+            read_only: true
+          - type: bind
+            target: /django/manage.py
+            source: ./modules/zconnect-django-demo/manage.py
+            read_only: true
+          - target: /django/run/
+            source: ./modules/zconnect-django-demo/run
+            type: bind
+          - target: /django/keys
+            source: ./modules/zconnect-django-demo/keys
+            type: bind
+      ports:
+          - "8981:8981"
+      environment:
+          DJANGO_SETTINGS_MODULE: django_demo.settings.composelocal
+          PYTHONPATH: "/django:/django/apps/zconnect-django"
+          DJANGO_SEED_PROJECT: 1
+          DJANGO_SEED_REQUIRES_SETUP: 1
+      command:
+          # server
+          # ["python3", "/django/manage.py", "runserver", "0.0.0.0:8981"]
+          # ["uwsgi", "--ini", "/django/configs/uwsgi-development.ini"]
+          - "sh"
+          - "-c"
+          - "python3 /django/manage.py migrate ; uwsgi --ini /django/configs/uwsgi.ini"
 
-  watsonworker:
-    build:
-      context: modules/zconnect-demo-virtual
-      dockerfile: deploy/dockerfiles/watsonworker.dockerfile
-    env_file:
-      - modules/zconnect-demo-virtual/deploy/keys-local.env
-    depends_on:
-      - mongodb
-      - redis
-      - server
+  celeryworker:
+      <<: *common_mount
+      ports: []
+      command:
+          # celery worker
+          - "celery"
+          - "-A"
+          - "django_demo"
+          - "worker"
+          - "-l"
+          - "info"
+
+  celerybeat:
+      <<: *common_mount
+      ports: []
+      command:
+          # celery worker
+          - "celery"
+          - "-A"
+          - "django_demo"
+          - "beat"
+          - "--loglevel=DEBUG"
+          - "-s"
+          - "/tmp/celerybeat-schedule"
+          - "--pidfile=/tmp/celerybeat.pid"
+
+  listener:
+      <<: *common_mount
+      ports: []
+      command:
+          # message listener
+          - "uwsgi"
+          - "--ini"
+          - "/django/configs/uwsgi-listener.ini"
+
+  redis:
+    image: redis:latest
 
   frontend:
     build:
@@ -60,7 +119,7 @@ services:
       - apiserver
     ports:
       - "9000:9000"
-        
+
   web:
     build:
       context: modules/zconnect-demo-web
@@ -69,16 +128,6 @@ services:
       - server
     ports:
       - "3000:3000"
-
-  mongodb:
-    image: mongo
-    volumes:
-      - db_data:/data/db
-    ports:
-      - "27017:27017"
-
-  redis:
-        image: "redis:alpine"
 
 volumes:
   db_data:
