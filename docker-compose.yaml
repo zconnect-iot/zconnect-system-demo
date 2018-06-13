@@ -46,7 +46,7 @@ services:
             read_only: true
           - type: bind
             target: /django/configs
-            source: ./configs
+            source: ./modules/zconnect-django-demo/configs
             read_only: true
           - type: bind
             target: /django/manage.py
