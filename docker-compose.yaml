@@ -161,7 +161,7 @@ services:
 
   web:
     build:
-      context: modules/zconnect-demo-web
+      context: modules/zconnect-web-template
       dockerfile: Dockerfile-node
     depends_on:
       - server
