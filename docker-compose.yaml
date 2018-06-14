@@ -34,7 +34,7 @@ services:
           - redis
       build:
           context: modules/zconnect-django-demo
-          dockerfile: deploy/Dockerfile.composelocal
+          dockerfile: deploy/Dockerfile
       volumes:
           - type: bind
             target: /django/django_demo
