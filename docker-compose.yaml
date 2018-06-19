@@ -1,7 +1,7 @@
 version: '3.2'
 services:
 
-  apiserver:
+  sim-backend-apiserver:
       build:
           context: modules/device-simulator-backend
           dockerfile: Dockerfile.zcsimserver
@@ -10,10 +10,10 @@ services:
       ports:
           - "5001:5001"
       depends_on:
-          - celeryworker
+          - sim-backend-celeryworker
           - redis
 
-  celeryworker:
+  sim-backend-celeryworker:
       environment: *env
       build:
           context: modules/device-simulator-backend
@@ -21,7 +21,7 @@ services:
       depends_on:
           - redis
 
-  celerybeat:
+  sim-backend-celerybeat:
       environment: *env
       build:
           context: modules/device-simulator-backend
@@ -110,6 +110,8 @@ services:
 
   redis:
     image: redis:latest
+    ports:
+          - "6379:6379"
 
   vernemq:
     image: erlio/docker-vernemq
@@ -150,12 +152,12 @@ services:
       VMQ_USERNAME: overlock-worker
       VMQ_PASSWORD: "123456789"
 
-  frontend:
+  sim-frontend:
     build:
       context: modules/device-simulator-frontend
       dockerfile: Dockerfile-node
     depends_on:
-      - apiserver
+      - sim-backend-apiserver
     ports:
       - "9000:9000"
 
