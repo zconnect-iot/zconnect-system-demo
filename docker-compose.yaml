@@ -29,6 +29,15 @@ services:
       depends_on:
           - redis
 
+  sim-frontend:
+      build:
+          context: modules/device-simulator-frontend
+          dockerfile: Dockerfile-node
+      depends_on:
+          - sim-backend-apiserver
+      ports:
+          - "9000:9000"
+
   server: &common_mount
       depends_on:
           - redis
@@ -110,8 +119,6 @@ services:
 
   redis:
     image: redis:latest
-    ports:
-          - "6379:6379"
 
   vernemq:
     image: erlio/docker-vernemq
@@ -152,14 +159,6 @@ services:
       VMQ_USERNAME: overlock-worker
       VMQ_PASSWORD: "123456789"
 
-  sim-frontend:
-    build:
-      context: modules/device-simulator-frontend
-      dockerfile: Dockerfile-node
-    depends_on:
-      - sim-backend-apiserver
-    ports:
-      - "9000:9000"
 
   web:
     build:
