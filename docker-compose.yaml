@@ -71,6 +71,7 @@ services:
           - "8981:8981"
       environment:
           DJANGO_SETTINGS_MODULE: django_demo.settings.development
+          REDIS_HOST: redis
           PYTHONPATH: "/django:/django/apps/zconnect-django"
           DJANGO_SEED_PROJECT: 1
           DJANGO_SEED_REQUIRES_SETUP: 1
