@@ -10,3 +10,6 @@
 [submodule "modules/ibm-iot-emulator"]
 	path = modules/ibm-iot-emulator
 	url = git@code.zoetrope.io:ZoetropeLabs/ibm-iot-emulator.git
+[submodule "modules/zconnect-web-template"]
+	path = modules/zconnect-web-template
+	url = git@github.com:zconnect-iot/zconnect-web-template.git
