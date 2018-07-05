@@ -1,3 +1,15 @@
 [submodule "modules/zconnect-web-template"]
 	path = modules/zconnect-web-template
 	url = git@github.com:zconnect-iot/zconnect-web-template.git
+[submodule "modules/device-simulator-backend"]
+	path = modules/device-simulator-backend
+	url = git@github.com:zconnect-iot/device-simulator-backend.git
+[submodule "modules/device-simulator-frontend"]
+	path = modules/device-simulator-frontend
+	url = git@github.com:zconnect-iot/device-simulator-frontend.git
+[submodule "modules/ibm-iot-emulator"]
+	path = modules/ibm-iot-emulator
+	url = git@github.com:zconnect-iot/ibm-iot-emulator.git
+[submodule "modules/zconnect-django-demo"]
+	path = modules/zconnect-django-demo
+	url = git@github.com:zconnect-iot/zconnect-django-demo.git
