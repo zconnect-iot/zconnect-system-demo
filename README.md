@@ -2,13 +2,19 @@
 
 This project brings together all of the essential zconnect components to create an IoT system, this includes:
  - zconnect-web-template (A react frontend to see sensor data graphs etc.)
- - zconnnect-django-demo (Django server application based on `zconnect-django`)
+ - zconnect-django-demo (Django server application based on `zconnect-django`)
  - ibm-iot-emulator (Emulator for Watson IoT MQTT broker)
  - device-simulator-backend (Backend for IoT firdge simulator)
  - device-simulator-frontend (Frontend for IoT firdge simulator)
 
 
 ## Running
+
+Firstly, update all submodules using:
+
+```
+git submodule update --init --recursive
+```
 
 Make sure `docker` is installed and accesible via $PATH. Then run:
 

@@ -142,7 +142,7 @@ services:
 
   hooks:
     build:
-      context: ./modules/ibm-iot-emulator/overlock-mqtt-auth
+      context: ./modules/ibm-iot-emulator/zconnect-mqtt-auth
       dockerfile: Dockerfile.vernemq
     ports:
       - "5000:5000"
