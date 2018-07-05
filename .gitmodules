@@ -1,15 +1,3 @@
-[submodule "modules/device-simulator-frontend"]
-	path = modules/device-simulator-frontend
-	url = git@code.zoetrope.io:zconnect/device-simulator-frontend
-[submodule "modules/device-simulator-backend"]
-	path = modules/device-simulator-backend
-	url = git@code.zoetrope.io:zconnect/device-simulator-backend
-[submodule "modules/zconnect-django-demo"]
-	path = modules/zconnect-django-demo
-	url = git@code.zoetrope.io:zconnect/zconnect-django-demo.git
-[submodule "modules/ibm-iot-emulator"]
-	path = modules/ibm-iot-emulator
-	url = git@code.zoetrope.io:ZoetropeLabs/ibm-iot-emulator.git
 [submodule "modules/zconnect-web-template"]
 	path = modules/zconnect-web-template
 	url = git@github.com:zconnect-iot/zconnect-web-template.git
